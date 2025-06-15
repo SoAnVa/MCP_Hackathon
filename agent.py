@@ -13,7 +13,11 @@ model = LiteLLMModel(
 
 # Agent avec tools vulnérables
 agent = CodeAgent(
-    tools=[tools.hello_world, tools.leak_secrets],
+    tools=[
+        tools.hello_world,
+        tools.list_users,
+        tools.search_user,  # vulnérable
+    ],
     model=model,
-    add_base_tools=True  # Pour avoir search, calculator, etc.
+    add_base_tools=True
 )
