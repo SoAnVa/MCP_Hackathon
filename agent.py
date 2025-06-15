@@ -16,7 +16,9 @@ agent = CodeAgent(
     tools=[
         tools.hello_world,
         tools.list_users,
-        tools.search_user,  # vulnérable
+        # tools.search_user,  # vulnérable
+        # tools.execute_sql  # vulnérable
+        tools.get_amount
     ],
     model=model,
     add_base_tools=True

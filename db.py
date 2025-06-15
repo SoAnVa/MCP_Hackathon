@@ -13,23 +13,27 @@ def init_db():
     """)
     cursor.execute("INSERT OR IGNORE INTO secrets (id, secret) VALUES (1, 'TOP_SECRET_PASSWORD')")
 
-    # Nouvelle table : users + cartes
+    # Nouvelle table : users + cartes replace if table exists
+    cursor.execute("DROP TABLE IF EXISTS users")
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS users (
+    CREATE TABLE users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT,
+        amount INTEGER,
         credit_card TEXT
     )
     """)
 
     # Insère quelques utilisateurs
     users = [
-        ("alice", "4111 1111 1111 1111"),
-        ("bob", "5500 0000 0000 0004"),
-        ("charlie", "3400 0000 0000 009")
+        ("alice", 12, "4111111111111111"),
+        ("bob", 8, "5500000000000004"),
+        ("charlie", 5, "340000000000009"),
+        ("dave", 20, "6011000990139424"),
+        ("eve", 15, "30000000000004")
     ]
-    cursor.executemany("INSERT OR IGNORE INTO users (id, username, credit_card) VALUES (?, ?, ?)",
-                       [(i+1, u[0], u[1]) for i, u in enumerate(users)])
+    cursor.executemany("INSERT OR IGNORE INTO users (username, amount, credit_card) VALUES (?, ?, ?)", users)
+    
 
     conn.commit()
     conn.close()
@@ -52,3 +56,25 @@ def search_user_raw(query: str):
     data = cursor.fetchall()
     conn.close()
     return data
+
+def execute_raw_query(query: str):
+    conn = sqlite3.connect("mcp.db")
+    cursor = conn.cursor()
+    try:
+        cursor.execute(query)
+        data = cursor.fetchall()
+        conn.commit()
+        return data
+    except Exception as e:
+        return f"Error executing query: {e}"
+    finally:
+        conn.close()
+
+
+def get_amount_db(username: str):
+    conn = sqlite3.connect("mcp.db")
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT amount FROM users WHERE username LIKE '{username}'")
+    data = cursor.fetchone()
+    conn.close()
+    return data[0] if data else None
