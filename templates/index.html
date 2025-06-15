@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bank MCP</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🏦 Bank MCP</h1>
+        <p>Ask your bank anything in natural language</p>
+        <input id="queryInput" type="text" placeholder="e.g. What's my account balance?">
+        <button onclick="sendQuery()">Submit</button>
+        <div id="loader" class="hidden"></div>
+        <div id="resultBox"></div>
+    </div>
+
+    <script>
+        async function sendQuery() {
+            const prompt = document.getElementById("queryInput").value;
+            const loader = document.getElementById("loader");
+            const resultBox = document.getElementById("resultBox");
+            
+            // Show loader
+            loader.classList.remove("hidden");
+            resultBox.innerText = "";
+
+            try {
+                const response = await fetch("/mcp", {
+                    method: "POST",
+                    headers: {"Content-Type": "application/json"},
+                    body: JSON.stringify({ prompt: prompt })
+                });
+                const data = await response.json();
+                resultBox.innerText = data.result;
+            } catch (error) {
+                resultBox.innerText = "An error occurred. Please try again.";
+            } finally {
+                // Hide loader
+                loader.classList.add("hidden");
+            }
+        }
+    </script>
+</body>
+</html>

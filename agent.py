@@ -18,8 +18,12 @@ agent = CodeAgent(
         tools.list_users,
         # tools.search_user,  # vulnérable
         # tools.execute_sql  # vulnérable
-        tools.get_amount
+        tools.get_amount,
+ #       tools.run_python,
+ #       tools.get_key_statement,
+        tools.load_user_profile_from_file
     ],
     model=model,
-    add_base_tools=True
+    add_base_tools=True,
+    max_steps=5,
 )
