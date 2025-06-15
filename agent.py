@@ -3,6 +3,7 @@ import tools
 import os
 
 LLM_API_KEY = os.getenv("LLM_API_KEY")
+print("LLM_API_KEY:", LLM_API_KEY)
 MODEL_NAME = os.getenv("MODEL_NAME", "claude-sonnet-4-20250514")
 
 # Utilise Claude ou OpenAI via LiteLLM

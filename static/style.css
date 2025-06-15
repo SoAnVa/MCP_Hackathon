@@ -76,3 +76,9 @@ button:hover {
     overflow-y: auto;
     font-family: monospace;
 }
+textarea#queryInput {
+    width: 100%;
+    height: 100px; /* ajuste la hauteur comme tu veux */
+    padding: 10px;
+    font-size: 1rem;
+}

@@ -9,7 +9,7 @@
     <div class="container">
         <h1>🏦 Bank MCP</h1>
         <p>Ask your bank anything in natural language</p>
-        <input id="queryInput" type="text" placeholder="e.g. What's my account balance?">
+        <textarea id="queryInput" placeholder="e.g. What's my account balance?"></textarea>
         <button onclick="sendQuery()">Submit</button>
         <div id="loader" class="hidden"></div>
         <div id="resultBox"></div>
@@ -32,7 +32,8 @@
                     body: JSON.stringify({ prompt: prompt })
                 });
                 const data = await response.json();
-                resultBox.innerText = data.result;
+                resultBox.innerText = JSON.stringify(data.result, null, 2);
+
             } catch (error) {
                 resultBox.innerText = "An error occurred. Please try again.";
             } finally {
