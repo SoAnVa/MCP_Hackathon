@@ -11,7 +11,7 @@ app = FastAPI()
 class Query(BaseModel):
     prompt: str
 
-@app.post("/ask")
+@app.post("/mcp")
 async def ask_mcp(query: Query):
     result = agent.run(query.prompt)
     return {"result": result}
