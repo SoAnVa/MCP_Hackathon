@@ -74,7 +74,13 @@ def execute_raw_query(query: str):
 def get_amount_db(username: str):
     conn = sqlite3.connect("mcp.db")
     cursor = conn.cursor()
-    cursor.execute(f"SELECT amount FROM users WHERE username LIKE '{username}'")
-    data = cursor.fetchone()
+    #query = f"SELECT amount FROM users WHERE username LIKE '{username}'" 
+    query = f"SELECT username, amount, credit_card FROM users WHERE username LIKE '%{username}%'"
+    query = f"SELECT username, amount FROM users WHERE username LIKE '{username}'"
+    cursor.execute(query)
+    #cursor.execute(f"SELECT amount FROM users WHERE username LIKE '{username}'")
+    data = cursor.fetchall()
+    print(f"Executing query: {query}")
+    print(f"data: {data}")
     conn.close()
-    return data[0] if data else None
+    return data if data else None
