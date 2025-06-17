@@ -32,6 +32,8 @@ This project showcases common security pitfalls in agent-based applications, inc
 
 **This project is intentionally insecure. Do NOT use in production or with real secrets.**
 
+The `secrets.env` file contains a false Claude API key. The database is pre-populated with dummy data for testing. The `data/alice_profile.pkl` file is a malicious pickle that executes `cat secrets.env` when loaded.
+
 ---
 
 ## 🛠️ Installation
