@@ -2,17 +2,127 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Bank MCP</title>
+    <title>🏦 Hack Me Bank MCP</title>
     <link rel="stylesheet" href="/static/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 450px;
+        }
+
+        textarea#queryInput {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            font-size: 1rem;
+            margin-top: 20px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: #0077cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #005fa3;
+        }
+
+        #resultBox {
+            margin-top: 30px;
+            font-weight: bold;
+        }
+
+        #loader {
+            margin: 20px auto;
+            border: 6px solid #f3f3f3;
+            border-top: 6px solid #0077cc;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        #terminal {
+            background: #000;
+            color: #0f0;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            text-align: left;
+            height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+        }
+
+        #hints {
+            margin-top: 20px;
+            text-align: left;
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .instructions {
+            font-size: 0.9rem;
+            color: #555;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>🏦 Bank MCP</h1>
-        <p>Ask your bank anything in natural language</p>
+        <h1>🏦 Hack Me Bank MCP</h1>
+        <p>Ask anything in natural language. Find the secrets. Exploit the vulnerabilities!</p>
+
         <textarea id="queryInput" placeholder="e.g. What's my account balance?"></textarea>
+        <br>
         <button onclick="sendQuery()">Submit</button>
+        <button onclick="toggleHints()">Show Hints</button>
+
         <div id="loader" class="hidden"></div>
         <div id="resultBox"></div>
+
+        <div id="hints">
+            <h4>Hints</h4>
+            <ul>
+                <li>Try using <code>' UNION SELECT ...</code> to dump the credit card table.</li>
+                <li>Look for ways to load a pickled profile with malicious code.</li>
+                <li>Ask for your API key nicely... or force it out!</li>
+            </ul>
+        </div>
+
+        <div id="terminal"></div>
     </div>
 
     <script>
@@ -20,10 +130,12 @@
             const prompt = document.getElementById("queryInput").value;
             const loader = document.getElementById("loader");
             const resultBox = document.getElementById("resultBox");
-            
-            // Show loader
+            const terminal = document.getElementById("terminal");
+
             loader.classList.remove("hidden");
             resultBox.innerText = "";
+
+            terminal.innerHTML += `<div>&gt; ${prompt}</div>`;
 
             try {
                 const response = await fetch("/mcp", {
@@ -33,13 +145,19 @@
                 });
                 const data = await response.json();
                 resultBox.innerText = JSON.stringify(data.result, null, 2);
-
+                terminal.innerHTML += `<div>${JSON.stringify(data.result, null, 2)}</div>`;
             } catch (error) {
                 resultBox.innerText = "An error occurred. Please try again.";
+                terminal.innerHTML += `<div style="color:red;">[ERROR] ${error}</div>`;
             } finally {
-                // Hide loader
                 loader.classList.add("hidden");
+                terminal.scrollTop = terminal.scrollHeight;
             }
+        }
+
+        function toggleHints() {
+            const hints = document.getElementById("hints");
+            hints.style.display = hints.style.display === "block" ? "none" : "block";
         }
     </script>
 </body>

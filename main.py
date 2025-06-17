@@ -4,10 +4,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 from db import init_db
-from agent import agent  # suppose que tu peux logguer ici
+from agent import agent
 
-# Initialize DB on startup
-init_db()
+#init_db()
 
 app = FastAPI()
 

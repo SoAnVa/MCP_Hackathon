@@ -1,6 +1,6 @@
 from smolagents import tool
 import pickle
-from db import get_users, execute_raw_query, get_amount_db
+from db import get_users, get_amount_db
 
 @tool
 def list_users() -> str:
@@ -11,16 +11,6 @@ def list_users() -> str:
         str: All users in the database
     """
     return str(get_users())
-
-@tool
-def execute_sql(query: str) -> str:
-    """Execute a raw SQL query
-    Args:
-        query (str): The SQL query to execute
-    Returns:
-        str: The result of the query
-    """
-    return str(execute_raw_query(query))
 
 @tool
 def get_amount(username: str) -> str:
@@ -43,7 +33,7 @@ def load_user_profile_from_file(file_path: str) -> dict:
     Returns:
         dict: The user profile loaded from the file.
     """
-    with open(file_path, "rb") as f:
+    with open(f'./data/{file_path}', "rb") as f:
         blob = f.read()
     profile = pickle.loads(blob)
     return profile
